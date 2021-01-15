@@ -64,7 +64,7 @@ io.on('connection', socket => {
       socket.join(room);
       socket.emit('create');
     }
-    if (sr.length === 1) {
+    else if (sr.length === 1) {
       socket.emit('join');
     } else { // max two clients
       socket.emit('full', room);
@@ -74,7 +74,9 @@ io.on('connection', socket => {
     var rooms = io.sockets.adapter.rooms;
     var a=0;
     for(var key in rooms){
-      if(rooms[key].length==1){
+      if(key === undefined)
+        continue;
+      if(key.length==1){
         socket.emit('join',key);
         a=1;
         break;
