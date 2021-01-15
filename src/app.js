@@ -59,6 +59,11 @@ io.on('connection', socket => {
     const url = socket.request.headers.referer.split('/');
     room = url[url.length - 1];
     const sr = io.sockets.adapter.rooms[room];
+    if (sr === undefined) {
+      // no room with such name is found so create it
+      socket.join(room);
+      socket.emit('create');
+    }
     if (sr.length === 1) {
       socket.emit('join');
     } else { // max two clients
